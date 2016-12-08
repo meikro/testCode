@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>示例：一个Javascript贷款计算器</title>
+        <style>
+            .output{font-weight:bold;}
+            #payment{text-decoration:underline;}
+            #graph{border:solid black 1px;}
+            th, td{vertical-aling:top;}
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>Enter Loan Data:</th>
+                <td></td>
+                <th>Loan Balance, Cumulative Equity, and Interest Payments</th>
+            </tr>
+            <tr>
+                <td>Amount of the loan($):</td>
+                <td><input type="text" id="amount" onchange="calculate();" /></td>
+                <td rowspan="8">
+                    <canvas id="graph" wodtj="400" height="250"></canvas>
+                </td>
+            </tr>
+            <tr>
+                <td>Annual interest(%):</td>
+                <td><input type="text" id="apr" onchange="calculate();" /></td>
+            </tr>
+            <tr>
+                <td>Repayment period(years):</td>
+                <td><input type="text" id="years" onchange="calculate();" /></td>
+            </tr>
+            <tr>
+                <td>Zipcode (to find lenders):</td>
+                <td><input type="text" id="zipcode" onchange="calculate();" /></td>
+            </tr>
+            <tr>
+                <td>Approximate Payments:</td>
+                <td><button onclicl="calculate();">Cakcykate</button></td>
+            </tr>
+            <tr>
+                <td>Monthly payment:</td>
+                <td>$<span class="output" id="oayment"></span></td>
+            </tr>
+            <tr>
+                <td>Total payment:</td>
+                <td>$<span class="output" id="total"></span></td>
+            </tr>
+            <tr>
+                <td>Total interest:</td>
+                <td>$<span class="output" id="totalinterest"></span></td>
+            </tr>
+            <tr>
+                <th>Sponsors:</th>
+                <td colspan="2">Applu fpr your loan with one of these fine lenders: <div id="lenders"></div></td>
+            </tr>
+        </table>
+        <script>
+            // parseFloat() -- 解析字符串并返回浮点数 url:https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/parseFloat
+            // Math.pow(x,y) -- 返回x的y次幂 url:https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Math/pow
+            // Number.prototype.toFixed() -- 使用定点表示法格式化一个数 url:https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed
+
+            "use strict" // 开启严格模式，如果浏览器支持的话
+            /* 定义calculate函数
+             * 这个函数从 input 元素中读取数据，计算贷款赔付信息，并将结果显示在 span 元素中
+             * 这里还保存了用户数据，展示了放贷人链接并绘制出图表
+            */
+            function calculate(){
+
+                //查找文档中用于输入输出的元素
+                var amount = $('amount'),
+                    apr = $('apr'),
+                    years = $('years'),
+                    zipcode = $('zipcode'),
+                    payment = $('payment'),
+                    total = $('total'),
+                    totalinterset = $('totalinterest');
+
+                // 假设所有的输入都是合法的，直接从input元素中获取输入的数据
+                // 将百分比转化为小数，年利率转化为月利率
+                // 将年度赔付转化为月度赔付
+                var principal = parseFloat(amount.value),
+                    interest = parseFloat(apr.value) / 100 / 12,
+                    payments = parseFloat(years.value);
+
+                // 计算月度赔付的数据
+                var x = Math.pow(1 + interest, payments);
+                var monthly = (principal * x * interest) / (x-1);
+
+                // 结果没有超出javascript的表示范围，其用户输入正确
+                // 此处将展示合法的结果
+                if(isFinite(monthly)){
+                    // 将数据填充至输出字段的位置，四舍五入小数点后两位
+                    payment.innerHTML = monthly.toFixed(2);
+                    total.innerHTML = (mothly * payments).toFixed(2);
+                    totalinterest.innerHTML = ((mothly * payments) - principal).toFixed(2);
+
+                    // 保存用户输入数据
+                    save(amount.value,apr.value,years.value,zipcode.value);
+
+                    // 找到并展示本地放贷人，忽略网络错误
+                    try{
+                        getLenders(amount.value,apr.value,years.value,zipcode.value);
+                    }catch(e){}
+
+                    // 用图表展示贷款余额，利息和资产收益
+                    chart(principal,interest,monthly,payments);
+                } else {
+
+                    // 如果输入的数据是非法的
+                    // 清空之前的输入数据
+                    payment.innerHTML = "";
+                    total.innerHTML = "";
+                    totalinterset.innerHTML = "";
+                    chart();
+                }
+
+            }
+
+
+            /* 
+             * 定义 $ 函数
+             * 这个函数从文档中获取指定ID的DOM元素并返回
+             * 此处不再判断，假设所有元素都存在
+            */
+           function $(elem){
+            return document.getElementById(elem);
+           }
+        </script>
+    </body>
+</html>
