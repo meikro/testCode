@@ -119,6 +119,88 @@
 
             }
 
+            // 将用户的输入保存在localStorage对象的属性中
+            // 这些属性在再次访问时还会继续保持在原位置
+            // 如果你在浏览器中按照file://url的方式直接打开本地文件
+            // 字无法在某些浏览器中使用存储功能
+            // 而通过HTTP打开文件是可行的
+            function save(amount, apr, years, zipcode){
+                if(window.localStorage){ // 只有在浏览器支持的时候才会运行这段代码
+                    localStorage.loan_amount = amount;
+                    localStorage.loan_apr = apr;
+                    localStorage.loan_years = years;
+                    localStorage.loan_zipcode = zipcode;
+                }
+            }
+
+            // 在文档首次加载时，将会尝试还原输入字段
+            window.onload = function(){
+                // 如果浏览器支持本地存储并且上次保存的值是存在的
+                if(window.lcoalStorage && localStorage.loan_amount){
+                    document.getElementById('amount').value = localStorage.loan_amount;
+                    document.getElementById('apr').value = localStorage.loan_apr;
+                    document.getElementById('years').value = localStorage.loan_years;
+                    document.getElementById('zipcode').value = localStorage.loan_zipcode;
+                }
+            }
+
+            // 将用户的输入发送至服务器端脚本
+            // 将返回一个本地房贷人的链接列表
+            // 在这个例子中并没有实现这种查找放贷人的服务
+            // 但如果该服务存在，该函数会使用它
+            function getLenders(amout, apr, years, zipcode){
+                // 如果浏览器不支持XMLHttpRequest对象，则退出
+                if(!window.XMLHttpRequest)return;
+
+                // 找到要显示放贷人的列表
+                var ad = document.getElementById('lenders');
+                if(!ad)return;
+
+                // 将用户的输入数据进行URL编码，并作为查询参数附加在URL里
+                var url = 'getLenders.php' +
+                          '?amt=' + encodeURIComponent(amount) +
+                          '&apr=' + encodeURIComponent(apr) +
+                          '&years=' + encodeURIComponent(years) +
+                          '&zip=' + encodeURIComponent(zipcode);
+
+                // 通过XMLHttpRequest对象来提取返回数据
+                var req = new XMLHttpRequest();
+                req.open('GET',url);
+                req.send(null);
+
+                // 在返回数据之前，注册了一个时间处理函数
+                // 这个处理函数将会在服务器的相应返回至客户端的时候调用
+                // 这种异步编程模型在客户端Javascript中是很常见的
+                req.onreadystatechange = function(){
+                    if(req.readyState == 4 && req.status == 200){
+                        // 如果代码运行到这里，说明我们得到了一个合法且完整的HTTP响应
+                        var response = req.responseText;
+                        var lenders = JSON.parse(response);
+
+                        var list = "";
+                        for(var i = 0; i < lenders.length; i++){
+                            list += "<li><a href='" + lenders[i].url + "'>" +
+                                    lenders[i].name + "</a>"
+                        }
+
+                        // 将数据在HTML元素中呈现出来
+                        ad.innerHTML = "<ul>" + list + "</ul>"
+                    }
+                }
+            }
+
+            // 在HTML <canvas>元素中用图表展示月度贷款余额、利息和资产收益
+            // 如果不传入参数，则清空之前的图表数据
+            function chart(principal, interest, monthly, payments){
+                var graph = document.getElementById('graph');;
+                graph.width = graph.width;
+
+////////  未完待续！！！！！
+
+
+            }
+
+
 
             /* 
              * 定义 $ 函数
