@@ -33,3 +33,25 @@ s.toUpperCase();
 
 // 转换为小写字母
 s.toLowerCase();
+
+/*匹配模式*/
+
+var text="testing: 1, 2, 3";
+var pattern = /\d+/g;
+
+// 匹配文本
+pattern.test(text);
+
+// 首次匹配成功的位置
+text.search(pattern);
+
+// 所有匹配项组成的数组
+text.match(pattern);
+
+// 将匹配到的内容进行替换
+text.replace(pattern,"#");
+
+// 用非字符串将字符截取成数组
+text.split(/\D+/);
+
+
