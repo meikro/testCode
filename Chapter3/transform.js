@@ -12,9 +12,9 @@ Boolean([]);
 Object(3);
 
 var n = 17;
-binary_string = n.toString(2);
-octal_string = "0" + n.toString(8);
-hex_string = "0x" + n.toString(16);
+binary_string = n.toString(2); // => '10001'
+octal_string = "0" + n.toString(8); // => '021'
+hex_string = "0x" + n.toString(16); // => '0x11'
 
 /*将数值转化为不同形式的字符串*/
 var n = 123456.789;
@@ -45,12 +45,12 @@ parseInt(".1"); // => NaN
 parseFloat("$72.47"); // => NaN
 
 // 设置转换基数
-parseInt("11", 2);
-parseInt("ff", 16);
-parseInt("zz", 36);
-parseInt("077", 8);
-parseInt("077",10);
-parseInt("077");
+parseInt("11", 2); // => 3
+parseInt("ff", 16); // => 255
+parseInt("zz", 36); // => 1295
+parseInt("077", 8); // => 63
+parseInt("077",10); // => 77
+parseInt("077"); // => 77
 
 
 
