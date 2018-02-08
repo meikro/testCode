@@ -30,5 +30,10 @@ a instanceof Object; // => true
 a instanceof RegExp; // => false 
 
 
+// 通过这个示例的验证可以看出，逻辑与返回的并不是 true 或 false ，而是返回的最终的计算结果 "真值" 或 "假值"。 
+var o = { x: 1},
+	p = null;
+o && o.x; // => 1  返回一个真值。即 o.x 的结果
+p && p.x; // => null
 
-
+// 
