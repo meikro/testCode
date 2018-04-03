@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>纯CSS实现导航跟随效果</title>
+    <style>
+        /* ul {
+            display: flex;
+            position: absolute;
+            width: 800px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            list-style: none;
+        }
+
+        li {
+            position: relative;
+            padding: 20px;
+            font-size: 24px;
+            color: #000;
+            line-height: 1;
+            transition: 0.2s all linear;
+            cursor: pointer;
+        }
+
+        li::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 0;
+            height: 100%;
+            border-bottom: 2px solid #000;
+            transition: 0.2s all linear;
+        }
+
+        li:hover::before {
+            width: 100%;
+            top: 0;
+            left: 0;
+            transition-delay: 0.1s;
+            border-bottom-color: #000;
+        }
+
+        li:hover~li::before {
+            left: 0;
+        }
+
+        li:active {
+            background: #000;
+            color: #fff;
+        } */
+
+        .nav {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav>li {
+            position: relative;
+            padding: 3px 6px;
+        }
+
+        .nav>li::after {
+            content: " ";
+            position: absolute;
+            bottom: 0;
+            left: 100%;
+            width: 0;
+            border-bottom: 2px solid #000;
+            transition: all 0.2s linear;
+        }
+        .nav>li:hover::after {
+            width:100%;
+            left: 0;
+        }
+        .nav>li:hover~li::after {
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <p>参考文档：https://juejin.im/post/5ab9e9056fb9a028be360292</p>
+    <hr>
+    <ul class="nav">
+        <li>不可思议的CSS</li>
+        <li>导航栏</li>
+        <li>光标下划线跟随</li>
+        <li>PURE CSS</li>
+        <li>Coco</li>
+    </ul>
+    <hr>
+    <p>分步走：</p>
+    <p>1. 完成对导航的排版布局</p>
+    <pre>
+    .nav {
+        display: flex;
+        list-style: none;
+    }
+
+    .nav>li {
+        position: relative;
+        padding: 3px 6px;
+    }
+
+    .nav>li::after {
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        border-bottom: 2px solid #000;
+    }
+    </pre>
+    <p>2. 实现底部横线的移动效果</p>
+    <p>Ⅰ. 宽度的从0到100%的动画</p>
+    <pre>
+    .nav>li::after {
+        transition: all 0.2s linear;
+    }
+    .nav>li:hover::after {
+        width:100%;
+    }
+    </pre>
+    <p>3. 也是关键性的一步</p>
+    <p>Ⅰ. 无缝衔接通过为元素的宽度和位置控制</p>
+    <p>Ⅱ. 当鼠标划过时宽度改变（从左向右变长或从有向左变长），位置不变，最终达到长度100%位置为0</p>
+    <p>Ⅲ. 当鼠标划出时宽度改变（从右向左变短或从左向右变短），位置不变，最终达到长度0，位置0或100%</p>
+</body>
+
+</html>
