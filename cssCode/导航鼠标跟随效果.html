@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>纯CSS实现导航跟随效果</title>
     <style>
+        /* 原CSS代码 -- 参考 */
+
         /* ul {
             display: flex;
             position: absolute;
@@ -57,42 +59,63 @@
 
         .nav {
             display: flex;
+            margin: 0 auto;
+            padding: 0;
             list-style: none;
         }
 
         .nav>li {
             position: relative;
-            padding: 3px 6px;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            font-size:1rem;
         }
 
         .nav>li::after {
             content: " ";
             position: absolute;
             bottom: 0;
-            left: 100%;
+            left: 0;
             width: 0;
             border-bottom: 2px solid #000;
             transition: all 0.2s linear;
         }
-        .nav>li:hover::after {
-            width:100%;
+
+        .nav:hover>li::after {
+            left: 100%;
+        }
+
+        .nav:hover>li:hover::after {
+            width: 100%;
             left: 0;
         }
-        .nav>li:hover~li::after {
+
+        .nav:hover>li:hover~li::after {
             left: 0;
         }
     </style>
+    <base target="_blank">
 </head>
 
 <body>
     <p>参考文档：https://juejin.im/post/5ab9e9056fb9a028be360292</p>
     <hr>
     <ul class="nav">
-        <li>不可思议的CSS</li>
-        <li>导航栏</li>
-        <li>光标下划线跟随</li>
-        <li>PURE CSS</li>
-        <li>Coco</li>
+        <li>
+            <a href="https://juejin.im/post/5ab9e9056fb9a028be360292">参考文章</a>
+        </li>
+        <li>
+            <a href="http://www.runoob.com/cssref/css3-pr-transition.html">动画属性手册</a>
+        </li>
+        <li>
+            <a href="javascript:;">光标下划线跟随</a>
+        </li>
+        <li>
+            <a href="javascript:;">本文链接</a>
+        </li>
+        <li>
+            <a href="https://github.com/woyiweita/testCode/blob/master/cssCode/%E5%AF%BC%E8%88%AA%E9%BC%A0%E6%A0%87%E8%B7%9F%E9%9A%8F%E6%95%88%E6%9E%9C.html">github地址</a>
+        </li>
     </ul>
     <hr>
     <p>分步走：</p>
@@ -129,8 +152,107 @@
     </pre>
     <p>3. 也是关键性的一步</p>
     <p>Ⅰ. 无缝衔接通过为元素的宽度和位置控制</p>
-    <p>Ⅱ. 当鼠标划过时宽度改变（从左向右变长或从有向左变长），位置不变，最终达到长度100%位置为0</p>
-    <p>Ⅲ. 当鼠标划出时宽度改变（从右向左变短或从左向右变短），位置不变，最终达到长度0，位置0或100%</p>
+    <!-- <p>Ⅱ. 当鼠标划过时宽度改变（从左向右变长或从有向左变长），位置不变，最终达到长度100%位置为0</p>
+    <p>Ⅲ. 当鼠标划出时宽度改变（从右向左变短或从左向右变短），位置不变，最终达到长度0，位置0或100%</p> -->
+    <p>Ⅱ. 从左向右切入；前一个元素宽度从左向右变短，当前元素宽度从左向右变长</p>
+    <p>宽度改变的情况步骤2中已经可以看出，是从右向左变短的效果，所以需要有位置的改变，造成从左向右变短的假象。设想：前一个线条的位置从0到100%变化，宽度从100%到0变化。</p>
+    <p>当前元素的线条从左向右变长，保持位置为0，宽度从0到100%变化即可</p>
+    <pre>
+    /*前一个元素*/
+    .nav>li(0)::after {
+        left:100%;
+        width:0;
+    }
+    /*当前元素*/
+    .nav>li(1):hover::after {
+        width:100%;
+        left:0;
+    }
+    </pre>
+    <p>Ⅲ. 从右向左切入；当前元素宽度从右向左变长，后一个元素宽度从右向左变端</p>
+    <p>当前元素宽度从0到100%，最终位置为0；后一个元素在0位置上宽度从100%到0；</p>
+    <pre>
+    /*当前元素*/
+    .nav>li(0)::after {
+        left:0;
+        width:100%;
+    }
+    /*后一个元素*/
+    .nav>li(1):hover::after {
+        width:0;
+        left:0;
+    }
+    </pre>
+    <p>通过上面的两段分析可以看出来，前一个元素的需要默认位置为100%，宽度为0；后一个元素的默认位置为0，宽度0；当前元素的最终效果位置为0，宽度为100%;</p>
+    <p>CSS没有选择器控制前一个元素的样式，但是可以控制后一个元素的样式，那就把前一个元素的样式进行默认设置，即“left:100%;width:0;”，当前元素的最终效果为“left:0;width:100%;”，后一个元素的样式为“left:0;width:0;”</p>
+    <p>所以最终改造以后的结果是：</p>
+    <pre>
+    .nav {
+        display: flex;
+        margin: 0;
+        list-style: none;
+    }
+
+    .nav>li {
+        position: relative;
+        padding: 3px 6px;
+    }
+
+    .nav>li::after {
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        left: 100%;
+        width: 0;
+        border-bottom: 2px solid #000;
+        transition: all 0.2s linear;
+    }
+    .nav>li:hover::after {
+        width:100%;
+        left: 0;
+    }
+    .nav>li:hover~li::after {
+        left: 0;
+    }
+    </pre>
+    <p>4. 改进的地方</p>
+    <p>鼠标第一次滑入的时候线条从左向右变长</p>
+    <p>默认情况下所有的线条位置在0；当鼠标滑到导航上的时候才改变线条的位置到100%；</p>
+    <p>最终的改变代码如下：</p>
+    <pre>
+    .nav {
+        display: flex;
+        margin: 0;
+        list-style: none;
+    }
+
+    .nav>li {
+        position: relative;
+        padding: 3px 6px;
+    }
+
+    .nav>li::after {
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        border-bottom: 2px solid #000;
+        transition: all 0.2s linear;
+    }
+    .nav:hover>li::after{
+        left: 100%;
+    }
+    .nav:hover>li:hover::after {
+        width:100%;
+        left: 0;
+    }
+    .nav:hover>li:hover~li::after {
+        left: 0;
+    }
+    </pre>
+    <p>此处仍还有很多不完美的地方需要改进！！！</p>
+
 </body>
 
 </html>
