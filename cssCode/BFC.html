@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>BFC</title>
+	<style>
+		.clearfix:after{content:" ";display:block;width:100%;height:0;overflow:hidden;clear:both;}
+	</style>
+</head>
+<body>
+	BFC -- 块级格式化上下文
+
+	<style>
+		.box1{border:1px solid #000;}
+		.child1{float:left;width:100px;height:100px;background-color:#f0f;}
+	</style>
+	<div class="box1">
+		<div class="child1"></div>
+	</div>
+	<div class="clearfix"></div>
+	<p>使用BFC</p>
+	<style>
+		.box2{border:1px solid #000;overflow:hidden;}
+		.child2{float:left;width:100px;height:100px;background-color:#f0f;}
+	</style>
+	<div class="box2">
+		<div class="child2"></div>
+	</div>
+	<p>BFC 的另一种使用</p>
+	<style>
+		.box3{border:1px solid #fff;overflow:hidden;}
+		.child3{float:left;width:100px;height:100px;background-color:#ff0;}
+		.content3{background-color:#f0f;}
+	</style>
+	<div class="box3">
+		<div class="child3"></div>
+		<div class="content3"></div>
+	</div>
+	<div class="clearfix"></div>
+	<p>BFC 的另一种使用</p>
+	<style>
+		.box4{position:relative;border:1px solid #fff;overflow:hidden;}
+		.child4{float:left;width:100px;height:100px;background-color:#ff0;}
+		.content4{/*position:absolute;top:0;bottom:0;right:0;left:100px;z-index:0;*//*width:100%;*/background-color:#f0f;overflow:hidden;height:200px;}
+	</style>
+	<div class="box4">
+		<div class="child4"></div>
+		<div class="content4">234567890-=</div>
+	</div>
+	<div class="clearfix"></div>
+	<p>BFC 的另一种使用</p>
+	<style>
+		.box5{border:1px solid #fff;display:flex;}
+		.child5{float:left;width:100px;height:100px;background-color:#ff0;}
+		.content5{flex:1;background-color:#f0f;}
+	</style>
+	<div class="box5">
+		<div class="child5"></div>
+		<div class="content5">234567890-=</div>
+	</div>
+</body>
+</html>
