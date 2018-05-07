@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        <title>
+            JavaScript 函数重载
+        </title>
+    </meta>
+</head>
+<body>
+    <p>
+        如何实现javascript的函数重载
+    </p>
+    <script>
+        (function(){
+			'use strict';
+
+
+			 // 传入不同个数的参数，执行不一样的运算方法
+		    function compute(){
+		        var len = arguments.length;
+		        switch(len){
+		            case 0: // 没有传入参数 直接返回0
+		                return 0;
+		            case 1: // 传入一个参数 返回该数的平方
+		                return Math.pow(arguments[0],2);
+		            case 2: // 传入两个个参数 两个数相加
+		                return arguments[0] + arguments[1];
+		        }
+		    }
+
+		    // 这个方法相对来说，可扩展性较差
+		    // 如果需要更多的可能性，则就需要修改内部函数
+		    // 计算验证结果
+		    compute(); // => 0
+		    compute(5); // => 25
+		    compute(3, 6); // => 9
+
+		    // 方法二： 利用对象指针特性与闭包函数的特性
+		    function methods(object, name, fn){
+		    	// 将对象中原有(上一层)的值进行保存
+		    	// 如果没有则 funs 为 undefined
+		    	// 函数运行完后 funs 是保存在内存中的
+		        var funs = object[name],self = this;
+		        // 使用新的函数替换现有的值
+		        object[name] = function(){
+		            // 当函数期望的参数个数等于传入的参数个数时
+		            // 执行当前函数
+		            if(fn.length === arguments.length){ 
+		                return fn.apply(self, arguments);
+		            } else if(typeof funs === 'function') {
+		            // 如果不是期望的参数个数，
+		            // 判断上一层是否为函数
+		            // 如果是函数，则返回上一层，执行上一层函数
+		                return funs.apply(self, arguments);
+		            }
+		        }
+		    }
+		    // 通过调用 methods 方法，实现函数重载
+		    var obj = {},mathCompute;
+		    methods(obj, 'compute', function(){
+		        return 0;
+		    });
+		    methods(obj, 'compute', function(n){
+		        return Math.pow(n, 2);
+		    })
+		    methods(obj, 'compute', function(n,m){
+		        return n + m;
+		    })
+		    // 将对象的属性值赋值给
+		    mathCompute = obj.compute;
+
+			// 计算验证结果
+		    mathCompute(); // => 0
+		    mathCompute(5); // => 25
+		    mathCompute(3, 6); // => 9
+
+		    // 方法三：其实是方法二的改进
+		    // 不再借助对象的指针，直接针对于变量本身
+		    // 利用闭包的原理实现
+		    // 这里应该叫做函数柯理化
+		    function ad(name, fn){
+		    	// 将原有(上一层)的函数进行保存
+		    	// 如果没有则 funs 为 undefined
+		    	// 函数运行完后 funs 是保存在内存中的
+		        var funs = name,self = this;
+		        // 直接将判断后得到的最终结果返回，进行赋值
+		        return function(){
+		            // 当函数期望的参数个数等于传入的参数个数时
+		            // 执行当前函数
+		            if(fn.length === arguments.length){ 
+		                return fn.apply(self, arguments);
+		            } else if(typeof funs === 'function') {
+		            // 如果不是期望的参数个数，则返回上一层
+		            // 判断上一层是否为函数
+		            // 如果是函数在执行上一层函数
+		                return funs.apply(self, arguments);
+		            }
+		        }
+		    }
+		    // 通过调用 ad 方法，实现函数重载
+		    var ab;
+		    ab = ad(ab, function(){
+		        return 0;
+		    });
+		    ab = ad(ab, function(n){
+		        return Math.pow(n, 2);
+		    });
+		    ab = ad(ab, function(n,m){
+		        return n + m;
+		    });
+			// 计算验证结果
+			ab(); // => 0
+		    ab(5); // => 25
+		    ab(3, 6); // => 9
+
+		    // 第三种方法相对而且扩展性更强一些
+		    // 如果理解了函数的返回值，相对理解这个方法会更容易一些
+		    // 方法二和方法三可以相互结合却印证更方便理解
+		    
+		    // 三种方法进行对比，就扩展性而言，第一种方法是较差的，第三种方法相对来说会好一些。但是在执行时，第一种方法根据参数的个数直接选择执行的方法即可，方法二、三需要进行一步一步的判断是否满足期望参数个数，直到找到与期望参数个数相同的函数为止，最后执行满足条件的函数。
+		})();
+    </script>
+</body>
+</html>
