@@ -57,7 +57,8 @@
 		        }
 		    }
 		    // 通过调用 methods 方法，实现函数重载
-		    var obj = {},mathCompute;
+		    var obj = {},
+		    	mathCompute;
 		    methods(obj, 'compute', function(){
 		        return 0;
 		    });
@@ -67,7 +68,7 @@
 		    methods(obj, 'compute', function(n,m){
 		        return n + m;
 		    })
-		    // 将对象的属性值赋值给
+		    // 将对象的属性值赋值给变量
 		    mathCompute = obj.compute;
 
 			// 计算验证结果
