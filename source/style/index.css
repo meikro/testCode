@@ -6,7 +6,7 @@
 .text-warning { color: rgb(255, 235, 58);}
 .text-info {color:rgb(83, 192, 255);}
 .text-error{color: red;}
-body{
+/* body{
     background-color:#ddd;
-}
+} */
 p{margin: 0; padding: 2rem; background-color: rgba(83, 192, 255,.3);}

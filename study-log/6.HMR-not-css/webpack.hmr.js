@@ -15,9 +15,9 @@ module.exports = merge(common,{
         // new webpack.NamedModulesPlugin(), // 用于启动 HMR 时可以显示模块的相对路径
         // new webpack.HotModuleReplacementPlugin() // Hot Module Replacement 的插件
         new webpack.HotModuleReplacementPlugin(),
-        // new webpack.NamedModulesPlugin()
+        new webpack.NamedModulesPlugin()
     ],
-    optimization:{
-        namedModules: true
-    }
+    // optimization:{
+    //     namedModules: true
+    // }
 })
