@@ -9,7 +9,6 @@ function component(){
     ].join('\n\n');
     return element;
 }
-console.info('aaaaa');
 const body = document.body;
 let element = component();
 body.appendChild(element);

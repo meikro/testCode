@@ -3,6 +3,5 @@ export function square(x){
 }
 
 export function cube(x){
-    // console.log("This value:"+x);
     return x*x*x;
 }
