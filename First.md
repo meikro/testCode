@@ -2,6 +2,8 @@
 ===
 ## webpack 概念
 >webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。
+
+![webpack][./resource/images/webpack/webpack.png]
 #### 四个核心概念
 - 入口(entry)
 - 输出(output)
@@ -28,3 +30,14 @@ npm install --save-dev webpack
 npm i -D webpack
 ```
 后面的命令为了使用方便，采用简写的模式（谁让我懒呢）
+  安装完成后的文件目录：
+  ```diff
+  webpack_study
+  |- /node_modules
+  |- package-lock.json
+  |- package.json
+
+    说点儿题外话，关于git方面的，可以自动忽略。
+    在提交项目源代码的时候，有些文件或者文件夹是没有必要提交的，比如 '/node_modules' 这个文件夹，这个时候可以创建一个 .gitignore 文件，将不提交的文件或者文件夹罗列出来即可。
+    详细书写规则这里就不再赘述了。
+
