@@ -31,14 +31,49 @@ npm i -D webpack
 ```
 后面的命令为了使用方便，采用简写的模式（谁让我懒呢）
 
-安装完成后的文件目录：
+安装完成后的文件目录：`之后的目录列表中将不再写明/node_modules文件夹`
 ```diff
   webpack_study
   |- /node_modules
   |- package-lock.json
   |- package.json
 ```
-    >说点儿题外话，关于git方面的，可以自动忽略。
-    >在提交项目源代码的时候，有些文件或者文件夹是没有必要提交的，比如 '/node_modules' 这个文件夹，这个时候可以创建一个 .gitignore 文件，将不提交的文件或者文件夹罗列出来即可。
-    >详细书写规则这里就不再赘述了。
+>说点儿题外话，关于git方面的，可以自动忽略。
+>在提交项目源代码的时候，有些文件或者文件夹是没有必要提交的，比如 '/node_modules' 这个文件夹，这个时候可以创建一个 .gitignore 文件，将不提交的文件或者文件夹罗列出来即可。
+>详细书写规则这里就不再赘述了。
 
+## 开始我们的学习之旅
+  在开始之前，先创建一个简单的小DOME实验一下效果，先不进行配置，使用`webpack-cli`工具进行构建。
+*** project ***
+```diff
+    webpack_study
+    |- package-lock.json
+    |- package.json
+   +|- /dist
+   +  |- index.html
+   +|- /src
+   +  |- index.js 
+```
+*** dist/index.html ***
+```html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>webpack 构建工具学习</title>
+</head>
+<body>
+    <script src="main.js"></script>
+</body>
+</html>
+```
+  因为使用了webpack-cli工具，可以直接运行命令进行构建工作。
+```npm
+npx webpack
+```
+  `npx`命令是Node 8.2+提供的，还可以使用下面的命令：
+```npm
+./node_modules/.bin/webpack
+```
+  虽然使用 webpack-cli 工具可以免配置，但个人认为还是无法满足大型项目的需求，仍然需要自行设置配置文件。
