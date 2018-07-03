@@ -8,7 +8,7 @@
     webpack_study
     |- package-lock.json
     |- package.json
-   +|- webpack.config.js
++   |- webpack.config.js
     |- /dist
       |- index.html
     |- /src
@@ -37,7 +37,7 @@ npx webpack --config webpack.config.js
 ```diff
 "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-   +"build": "webpack --config webpack.config.js"
++   "build": "webpack --config webpack.config.js"
 }
 ```
   添加完成后只需运行`npm run build`命令即可；
