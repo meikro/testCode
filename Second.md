@@ -1,8 +1,11 @@
 第二篇：Webpack 文件配置与概念理解
 ===
 ## webpack 配置文件
+
 >比起 CLI 这种简单直接的使用方式，配置文件具有更多的灵活性。我们可以通过配置方式指定 loader 规则(loader rules)、插件(plugins)、解析选项(resolve options)，以及许多其他增强功能。
+
   先编写一个配置文件，通过这个配置文件对 webpack 配置做一个初步了解。
+
 ***project***
 ```diff
     webpack_study
@@ -26,12 +29,12 @@ module.exports = {
     }
 }
 ```
-`如果 webpack.config.js 存在，则 webpack 命令将默认选择使用它。我们在这里使用 --config 选项只是向你表明，可以传递任何名称的配置文件。这对于需要拆分成多个文件的复杂配置是非常有用。`
 
   通过配置文件进行构建操作：
 ```npm
 npx webpack --config webpack.config.js
 ```
+`如果 webpack.config.js 存在，则 webpack 命令将默认选择使用它。我们在这里使用 --config 选项只是向你表明，可以传递任何名称的配置文件。这对于需要拆分成多个文件的复杂配置是非常有用。`
 
   如果每次构建都运行这段命令会很繁琐，况且随着项目的复杂，可能命令中的属性配置也会随着增多，为了解决这个问题，就运用到了 `npm scripts`，只需要把命令写入到 `package.json`文件中的`scripts`下即可：
 ```diff
@@ -68,7 +71,8 @@ module.export = {
 ```
 ***还有几个核心概念没有在示例中体现，在后面的配置中会用到，在这里先提前说明一下***
 #### 模式
-  在安装插件的时候会有一个命令选项：`npm install --save-dev ***` 或 `npm install --save`，其实这两个命令是对插件使用模式的一种区分，使用了`--save-dev`即表示是在开发环境中使用的插件，使用`--save`表示生产环境和开发环境都将使用到的插件；
+    在安装插件的时候会有一个命令选项：`npm install --save-dev ***` 或 `npm install --save`，其实这两个命令是对插件使用模式的一种区分，使用了`--save-dev`即表示是在开发环境中使用的插件，使用`--save`表示生产环境和开发环境都将使用到的插件；
+    
   所以很明显的看出，这里的模式划分氛围 `生产模式(production)`和`开发模式(development)`，通过设置 mode 参数，可以启用相应模式下的 webpack 内置的优化。
 ***开发模式***
 ```javascript
@@ -131,3 +135,7 @@ module.exports = {
 }
 ```
   基本的概念介绍就先到这里，弄清这些概念该如何使用，还是需要实操进行。
+
+## 管理资源
+   webpack 工具将动态打包(dynamically bundle)所有依赖项，每个模块都可以明确表述它自身的依赖，避免打包未使用的模块。webpack 最出色的功能之一就是可以通过 loader 引入任何其他类型的文件。
+#### 加载CSS资源
